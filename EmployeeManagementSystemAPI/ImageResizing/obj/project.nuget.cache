@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "R5B8x7jGCXfayDfenxHi51qTOlY+LGVcV8G36cUAqts1HtX4l8s5SnDTabOaAdK4dM3DKc76Kje/TCWOSAs3Ww==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\ImageResizing\\ImageResizing.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Karen Hakobjanyan\\.nuget\\packages\\sixlabors.imagesharp\\3.0.2\\sixlabors.imagesharp.3.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

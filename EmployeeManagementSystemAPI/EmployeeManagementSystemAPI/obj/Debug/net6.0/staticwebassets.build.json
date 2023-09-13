@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "Hash": "DzHX4U/84tQsF5kqUIFfvOF5u7QS/u+mjD5AyqvgUZ0=",
+  "Source": "EmployeeManagementSystemAPI",
+  "BasePath": "_content/EmployeeManagementSystemAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "EmployeeManagementSystemAPI\\wwwroot",
+      "Source": "EmployeeManagementSystemAPI",
+      "ContentRoot": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\",
+      "BasePath": "_content/EmployeeManagementSystemAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\Images\\0f6caf25-550c-40d4-89f6-a7298823d36f.JPG",
+      "SourceId": "EmployeeManagementSystemAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\",
+      "BasePath": "_content/EmployeeManagementSystemAPI",
+      "RelativePath": "Images/0f6caf25-550c-40d4-89f6-a7298823d36f.JPG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\0f6caf25-550c-40d4-89f6-a7298823d36f.JPG"
+    },
+    {
+      "Identity": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\Images\\1b56e2d5-2ce0-40e3-a11b-c6ad519644c6.JPG",
+      "SourceId": "EmployeeManagementSystemAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\",
+      "BasePath": "_content/EmployeeManagementSystemAPI",
+      "RelativePath": "Images/1b56e2d5-2ce0-40e3-a11b-c6ad519644c6.JPG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\1b56e2d5-2ce0-40e3-a11b-c6ad519644c6.JPG"
+    },
+    {
+      "Identity": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\Images\\d5dcfea8-a41a-4850-97e4-79a82fab6f38.JPG",
+      "SourceId": "EmployeeManagementSystemAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\",
+      "BasePath": "_content/EmployeeManagementSystemAPI",
+      "RelativePath": "Images/d5dcfea8-a41a-4850-97e4-79a82fab6f38.JPG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\d5dcfea8-a41a-4850-97e4-79a82fab6f38.JPG"
+    },
+    {
+      "Identity": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\Images\\e7167e67-8cf3-456a-a32f-f421a11e0f74.JPG",
+      "SourceId": "EmployeeManagementSystemAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Karen Hakobjanyan\\source\\repos\\EmployeeManagementSystem\\EmployeeManagementSystemAPI\\EmployeeManagementSystemAPI\\wwwroot\\",
+      "BasePath": "_content/EmployeeManagementSystemAPI",
+      "RelativePath": "Images/e7167e67-8cf3-456a-a32f-f421a11e0f74.JPG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\e7167e67-8cf3-456a-a32f-f421a11e0f74.JPG"
+    }
+  ]
+}

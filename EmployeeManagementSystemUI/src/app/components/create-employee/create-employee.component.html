@@ -1,0 +1,39 @@
+<app-navbar></app-navbar>
+<form   (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <img [src]="'https://localhost:7262/Images/' + employee.profilePictureUrl" *ngIf="employee.profilePictureUrl">
+    <div [class.error]="!employee.firstName && showValidation">
+        <label for="FirstName" >First Name:</label>
+        <input type="text" id="FirstName" [(ngModel)]="employee.firstName" name="firstName">
+        <small class="text-danger" *ngIf="!employee.firstName && showValidation">First Name is required</small>
+    </div>
+    <div [class.error]="!employee.lastName && showValidation">
+        <label for="LastName">Last Name:</label>
+        <input type="text" id="LastName" [(ngModel)]="employee.lastName" name="lastName">
+        <small class="text-danger" *ngIf="!employee.lastName && showValidation">Last Name is required</small>
+    </div>
+    <div [class.error]="!employee.position && showValidation">
+        <label for="Position">Position:</label>
+        <input type="text" id="Position" [(ngModel)]="employee.position" name="position">
+        <small class="text-danger" *ngIf="!employee.position && showValidation">Position is required</small>
+    </div>
+    <div [class.error]="!employee.startDate && showValidation">
+        <label for="startDate">Start Date:</label>
+        <input type="date"  id="startDate" name="startDate" [value]="formatDate(employee.startDate)" (change)="startDateChange($any($event.target).valueAsDate)">
+        <small class="text-danger" *ngIf="!employee.startDate && showValidation">Start Date is required</small>
+    </div>
+    <div [class.error]="(!employee.status || employee.status.id === -1) && showValidation">
+        <label for="Status">Status:</label>
+        <select id="Status" (change)="statusChange($any($event.target).value)" name="status" [(ngModel)]="employee.status.id">
+            <option [value]="-1">Select Status</option>
+            <option *ngFor="let status of statusList" [value]="status.id">{{ status.name }}</option>
+        </select>
+        <small class="text-danger" *ngIf="(!employee.status || employee.status.id === -1) && showValidation">Status is required</small>
+    </div>
+    <div >
+        <label for="Photo">Picture:</label>
+        <input type="file" id="Photo" (change)="handleFileInput($any($event.target).files)">
+    </div>
+
+    <button type="submit" class="btn btn-light">Save</button>
+    <button type="button" class="btn btn-danger" (click)="onClose()">Close</button>
+</form>

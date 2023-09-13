@@ -1,0 +1,72 @@
+<div class="vh-100 d-flex justify-content-center align-items-center ">
+    <div class="col-md-5 p-5 shadow-sm border rounded-5 border-primary bg-white">
+        <h2 class="text-center mb-4 text-primary">Login Form</h2>
+        <form [formGroup]="loginForm">
+            <div class="mb-3 form-group">
+                <label for="Email" class="form-label">Email address</label>
+                <input formControlName="Email" type="email" class="form-control border border-primary" id="Email"
+                       aria-describedby="emailHelp">
+                <small class="text-danger"
+                       *ngIf="loginForm.get('Email')?.hasError('required') && loginForm.get('Email')?.touched">Email
+                    is required</small>
+                <small class="text-danger"
+                       *ngIf="loginForm.get('Email')?.touched && loginForm.get('Email')?.hasError('email')">Please
+                    insert correct email</small>
+                <small *ngIf="loginForm.get('Email')?.hasError('serverError')" class="text-danger">
+                    {{ loginForm.get('Email')?.getError('serverError')[0] }}
+                </small>
+            </div>
+
+            <div class="mb-3 form-group">
+                <label for="Password" class="form-label">Password</label>
+                <input formControlName="Password" type="password" class="form-control border border-primary"
+                       id="Password">
+                <small class="text-danger"
+                       *ngIf="loginForm.get('Password')?.touched && loginForm.get('Password')?.hasError('required')">Password
+                    is
+                    required</small>
+                <small *ngIf="loginForm.get('Password')?.hasError('pattern') && loginForm.get('Password')?.touched"
+                       class="text-danger">
+                    Password must be at least 8 characters long and include at least one uppercase letter, one lowercase
+                    letter, and one digit.
+                </small>
+                <small *ngIf="loginForm.get('Password')?.hasError('serverError')" class="text-danger">
+                    {{ loginForm.get('Password')?.getError('serverError')[0] }}
+                </small>
+            </div>
+            <p class="small"><a class="font-weight-bold" href="#" id="forgot" data-bs-toggle="modal"
+                                data-bs-target="#popupModel">Forgot password?</a></p>
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit" (click)="onLogin()">Login</button>
+            </div>
+            <small *ngIf="validationMessage" class="text-danger">
+                {{ validationMessage }}
+            </small>
+        </form>
+        <div class="mt-3">
+            <p class="mb-0  text-center">Don't have an account?
+                <a routerLink="/register" class="text-primary fw-bold">Sign Up</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="popupModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Forget Password?</h5>
+            </div>
+            <div class="modal-body">
+                <input type="email" class="form-control border border-primary"
+                       aria-describedby="emailHelp" placeholder="Email" [(ngModel)]="resetPasswordEmail" (ngModelChange)="checkValidEmail($event)">
+                <small class="text-danger" *ngIf="!resetPasswordEmail">Email is required</small>
+                <small class="text-danger" *ngIf="!isEmailValid && resetPasswordEmail">Email is invalid</small>
+            </div>
+            <div class="modal-footer">
+                <button id="closeBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" (click)="confirmSendValidationLink()" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+

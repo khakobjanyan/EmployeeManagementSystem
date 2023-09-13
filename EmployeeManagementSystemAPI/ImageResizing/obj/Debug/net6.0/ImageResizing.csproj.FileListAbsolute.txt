@@ -1,0 +1,17 @@
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\bin\Debug\net6.0\ImageResizing.exe
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\bin\Debug\net6.0\ImageResizing.deps.json
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\bin\Debug\net6.0\ImageResizing.runtimeconfig.json
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\bin\Debug\net6.0\ImageResizing.dll
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\bin\Debug\net6.0\ImageResizing.pdb
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\bin\Debug\net6.0\SixLabors.ImageSharp.dll
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.csproj.AssemblyReference.cache
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.AssemblyInfoInputs.cache
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.AssemblyInfo.cs
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.csproj.CoreCompileInputs.cache
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.csproj.CopyComplete
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.dll
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\refint\ImageResizing.dll
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.pdb
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ImageResizing.genruntimeconfig.cache
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\ImageResizing\obj\Debug\net6.0\ref\ImageResizing.dll

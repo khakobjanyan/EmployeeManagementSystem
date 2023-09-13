@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div class="employee-details" *ngIf="employee; ">
+    <h2>Employee Details</h2>
+    <div>
+        <label>First Name:</label>
+        <span>{{ employee.firstName }}</span>
+    </div>
+    <div>
+        <label>Last Name:</label>
+        <span>{{ employee.lastName }}</span>
+    </div>
+    <div>
+        <label>Position:</label>
+        <span>{{ employee.position }}</span>
+    </div>
+    <div>
+        <label>Start Date:</label>
+        <span>{{ employee.startDate | date }}</span>
+    </div>
+    <div>
+        <label>Status:</label>
+        <span>{{employee.status.name}}</span>
+    </div>
+    <div>
+        <label>Picture:</label>
+        <img [src]="'https://localhost:7262/Images/' + employee.profilePictureUrl" alt="Employee Picture" />
+    </div>
+    <div class="action-buttons">
+        <button class="btn btn-danger" (click)="deleteEmployee()">Delete</button>
+        <button class="btn btn-primary" (click)="editEmployee()">Edit</button>
+    </div>
+</div>
