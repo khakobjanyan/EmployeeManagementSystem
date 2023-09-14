@@ -2,17 +2,13 @@
 using EmployeeManagementSystemAPI.Helpers;
 using EmployeeManagementSystemAPI.Models;
 using EmployeeManagementSystemAPI.Models.Dto;
+using EmployeeManagementSystemAPI.Repository.Interfaces;
 using EmployeeManagementSystemAPI.Utility.EmailService;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using System.Security.Authentication;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace EmployeeManagementSystemAPI.Controllers
 {
@@ -26,6 +22,8 @@ namespace EmployeeManagementSystemAPI.Controllers
         private readonly AppDbContext _authContext;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
+        private readonly IUserService _userService;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserController"/> class.
@@ -33,11 +31,14 @@ namespace EmployeeManagementSystemAPI.Controllers
         /// <param name="appDbContext">The application database context.</param>
         /// <param name="configuration">The configuration for JWT tokens.</param>
         /// <param name="emailService">The email service for sending emails.</param>
-        public UserController(AppDbContext appDbContext, IConfiguration configuration, IEmailService emailService)
+        public UserController(AppDbContext appDbContext, IConfiguration configuration, IEmailService emailService, IUserService userService, ILogger logger)
         {
             _authContext = appDbContext;
             _configuration = configuration;
             _emailService = emailService;
+            _userService = userService;
+            _logger = logger;   
+
         }
 
         /// <summary>
@@ -51,23 +52,20 @@ namespace EmployeeManagementSystemAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _authContext.Users
-                .FirstOrDefaultAsync(u => u.Email == userObj.Email);
-                if (user == null || !PasswordHasher.VerifyPassword(userObj.Password, user.Password))
+                try
                 {
-                    return Unauthorized(new { StatusCode=401, Message = "Incorrect email or password." });
+                    var result = await _userService.AuthenticateAsync(userObj);
+                    return Ok(result);
                 }
-
-                user.Token = TokenCreatHandler.CreateJWTToken(user);
-                user.RefreshToken = TokenCreatHandler.CreateRefreshJWTToken(_authContext);
-                user.RefreshTokenExpTime = DateTime.Now.AddHours(5);
-                await _authContext.SaveChangesAsync();
-                
-                return Ok(new TokenDto()
+                catch (AuthenticationException ex)
                 {
-                    AccessToken = user.Token,
-                    RefreshToken = user.RefreshToken
-                });
+                    return Unauthorized(new { Message = ex.Message });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message, ex);
+                    return StatusCode(500, new { Message = "Internal server error" });
+                }
 
             }
             else
@@ -100,16 +98,11 @@ namespace EmployeeManagementSystemAPI.Controllers
             }
             if (ModelState.IsValid)
             {
-                //userObj.Password = PasswordHasher.DecryptPassword(userObj.Password);
-                userObj.Password = PasswordHasher.HashPassword(userObj.Password);
-                userObj.Role = "User";
-                userObj.Token = TokenCreatHandler.CreateJWTToken(userObj);
-                await _authContext.Users.AddAsync(userObj);
-                await _authContext.SaveChangesAsync();
+                var token = await _userService.RegisterAsync(userObj);
 
                 return Ok(new
                 {
-                    Token = userObj.Token,
+                    Token = token,
                     Message = "User Registered!"
                 });
             }
@@ -138,30 +131,20 @@ namespace EmployeeManagementSystemAPI.Controllers
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh(TokenDto tokenDto)
         {
-            if (tokenDto == null)
+            try
             {
-                return BadRequest("Invalid request");
+                var result = await _userService.RefreshTokenAsync(tokenDto);
+                return Ok(result);
             }
-            if (string.IsNullOrEmpty(tokenDto.AccessToken))
+            catch (SecurityTokenException ex)
             {
-                return BadRequest(new { Message = "Invalid request" });
+                return BadRequest(new { Message = ex.Message });
             }
-            var principal = TokenCreatHandler.getPrincipalFromexpiredToken(tokenDto.AccessToken);
-            var userName = principal.Identity.Name;
-            var user = await _authContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
-            if(user == null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpTime <= DateTime.Now)
+            catch (Exception ex)
             {
-                return BadRequest("Invalid token");
+                _logger.LogError(ex.Message, ex);
+                return StatusCode(500, new { Message = "Internal server error" });
             }
-            var newAccessToken = TokenCreatHandler.CreateJWTToken(user);
-            var newRefreshToken = TokenCreatHandler.CreateRefreshJWTToken(_authContext);
-            user.RefreshToken = newRefreshToken;
-            await _authContext.SaveChangesAsync();
-            return Ok(new TokenDto
-            {
-                AccessToken = newAccessToken,
-                RefreshToken = newRefreshToken
-            });
 
         }
 

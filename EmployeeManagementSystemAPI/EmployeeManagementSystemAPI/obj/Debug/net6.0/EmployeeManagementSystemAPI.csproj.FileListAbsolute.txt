@@ -110,3 +110,4 @@ C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagem
 C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\EmployeeManagementSystemAPI\bin\Debug\net6.0\tr-TR\Hangfire.Core.resources.dll
 C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\EmployeeManagementSystemAPI\bin\Debug\net6.0\zh-TW\Hangfire.Core.resources.dll
 C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\EmployeeManagementSystemAPI\bin\Debug\net6.0\zh\Hangfire.Core.resources.dll
+C:\Users\Karen Hakobjanyan\source\repos\EmployeeManagementSystem\EmployeeManagementSystemAPI\EmployeeManagementSystemAPI\bin\Debug\net6.0\SixLabors.ImageSharp.dll

@@ -18,9 +18,11 @@ namespace EmployeeManagementSystemAPI.Models
         [Required]
         [EmailAddress]
         [UniqueEmail]
+        [MaxLength(255)]
         public string Email { get; set; }
         [Required]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$", ErrorMessage = "Password must be at least 8 characters long and contain at least one capital letter, one lowercase letter, and one digit.")]
+        [MaxLength(255)]
         public string Password { get; set; }
         public string? Token { get; set; }
         public string? Role { get; set; }

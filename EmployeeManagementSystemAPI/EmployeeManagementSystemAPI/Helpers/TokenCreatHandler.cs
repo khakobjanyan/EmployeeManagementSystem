@@ -10,13 +10,22 @@ namespace EmployeeManagementSystemAPI.Helpers
 {
     public class TokenCreatHandler
     {
-        public static ClaimsPrincipal getPrincipalFromexpiredToken(string token)
+        private static IConfiguration _configuration;
+
+        public static void Initialize(IConfiguration configuration)
         {
-            var key = Encoding.ASCII.GetBytes("VerySuperSecretKeyAndHardHiddenKey");
+            _configuration = configuration;
+        }
+        public static ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            
+            var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:Key"]);
             var tokenValidationParametrs = new TokenValidationParameters
             {
                 ValidateAudience = false,
                 ValidateIssuer = false,
+                ValidAudience = _configuration["JwtSettings:Audience"],
+                ValidIssuer = _configuration["JwtSettings:Issuer"],
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateLifetime = false
@@ -35,7 +44,7 @@ namespace EmployeeManagementSystemAPI.Helpers
         public static string CreateJWTToken(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("VerySuperSecretKeyAndHardHiddenKey");
+            var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:Key"]);
             var identity = new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Name, user.UserName),
@@ -43,11 +52,11 @@ namespace EmployeeManagementSystemAPI.Helpers
                 new Claim(ClaimTypes.Role, user.Role)
             });
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
-
+            int expirationMinutes = int.Parse(_configuration["JwtSettings:AccessTokenExpirationMinutes"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identity,
-                Expires = DateTime.Now.AddHours(5),
+                Expires = DateTime.Now.AddMinutes(expirationMinutes),
                 SigningCredentials = credentials
             };
 

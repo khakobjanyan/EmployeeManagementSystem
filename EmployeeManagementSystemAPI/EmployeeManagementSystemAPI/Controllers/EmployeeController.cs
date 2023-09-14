@@ -20,18 +20,20 @@ namespace EmployeeManagementSystemAPI.Controllers
     [ApiController]
     public class EmployeeController : Controller
     {
-        private readonly AppDbContext _authContext;
-        private readonly IFileService _fileService;
+        private readonly AppDbContext _dbContext;
+        private readonly IEmployeeService _employeeService;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeController"/> class.
         /// </summary>
         /// <param name="appDbContext">The application database context.</param>
         /// <param name="fileService">The file service for handling images.</param>
-        public EmployeeController(AppDbContext appDbContext, IFileService fileService)
+        public EmployeeController(AppDbContext appDbContext, IEmployeeService employeeService, ILogger logger)
         {
-            _authContext = appDbContext;
-            _fileService = fileService;
+            _dbContext = appDbContext;
+            _employeeService = employeeService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -47,21 +49,27 @@ namespace EmployeeManagementSystemAPI.Controllers
             // Check if the received data is valid
             if (ModelState.IsValid)
             {
-                // If an image is provided, save it and update the profile picture URL
-                if (employee.ImageFile != null)
+                try
                 {
-                    employee.ProfilePictureUrl = await _fileService.SaveImageAsync(employee.ImageFile);
-                    
-                }
-                // Add the employee to the database and save changes
-                await _authContext.Employees.AddAsync(employee);
-                await _authContext.SaveChangesAsync();
+                    var createdEmployee = await _employeeService.CreateEmployee(employee);
 
-                // Return a success message
-                return Ok(new
+                    // Return a success message
+                    return Ok(new
+                    {
+                        Message = "Success",
+                        Data = createdEmployee
+                    });
+                }
+                catch (Exception ex)
                 {
-                    Message = "Succsess",
-                });
+                    _logger.LogError(ex.Message, ex);
+                    return StatusCode(500, new
+                    {
+                        Message = "An error occurred while creating the employee.",
+                        Error = ex.Message
+                    });
+                }
+
             }
             else
             {
@@ -93,47 +101,39 @@ namespace EmployeeManagementSystemAPI.Controllers
             // Check if the received data is valid
             if (ModelState.IsValid)
             {
-                // Ensure that the provided ID matches the employee's ID
-                if (id != employee.Id)
+                try
                 {
-                    return BadRequest(new
+                    var editedEmployee = await _employeeService.EditEmployee(id, employee);
+
+                    return Ok(new
                     {
-                        Message = "Invalid data"
+                        Message = "Edit done",
+                        Data = editedEmployee
                     });
                 }
-
-                // Check if the employee exists
-                if (!_authContext.Employees.Any(e => e.Id == id))
+                catch (ArgumentNullException ex)
                 {
                     return NotFound(new
                     {
-                        Message = "Employee Not Found"
+                        Message = ex.Message
                     });
                 }
-
-                // If a new image is provided and different from the current one, update it
-                if (employee.ProfilePictureUrl != _authContext.Employees.FirstOrDefault(e => e.Id == employee.Id).ProfilePictureUrl && employee.ImageFile != null) 
+                catch (ArgumentException ex)
                 {
-                    await _fileService.DeleteImageAsync(_authContext.Employees.FirstOrDefault(e => e.Id == employee.Id).ProfilePictureUrl);
-                    employee.ProfilePictureUrl = await _fileService.SaveImageAsync(employee.ImageFile);
+                    return BadRequest(new
+                    {
+                        Message = "Invalid data",
+                        Error = ex.Message
+                    });
+                } catch(Exception ex)
+                {
+                    _logger.LogError(ex.Message, ex);
+                    return StatusCode(500, new
+                    {
+                        Message = "An error occurred while editing the employee.",
+                        Error = ex.Message
+                    });
                 }
-
-                // Detach the existing employee from the context and update the employee
-                var existingEmployee = _authContext.Employees.Local.FirstOrDefault(e => e.Id == employee.Id);
-                if (existingEmployee != null)
-                {
-                    _authContext.Entry(existingEmployee).State = EntityState.Detached;
-                }
-
-                // Save changes to the database
-                _authContext.Entry(employee).State = EntityState.Modified;
-                await _authContext.SaveChangesAsync();
-
-                // Return a success message
-                return Ok(new
-                {
-                    Message = "Edit done"
-                });
             }
             else
             {
@@ -159,21 +159,35 @@ namespace EmployeeManagementSystemAPI.Controllers
         /// <returns>A response containing the employee data or an error message.</returns>
         [Authorize]
         [HttpGet("get-employee/{id}"), DisableRequestSizeLimit]
-        public async Task<IActionResult> getEmployeeById(int id)
-        {            
-            var employee =  await _authContext.Employees.FirstOrDefaultAsync(e=> e.Id == id);
-            if(employee == null)
+        public async Task<IActionResult> GetEmployeeById(int id)
+        {
+            try
             {
-                return BadRequest(new
+                // Retrieve the employee using the EmployeeService
+                var employee = await _employeeService.GetEmployeeById(id);
+
+                return Ok(new
                 {
-                    Message = "Somthing went wrong"
+                    TotalRowCount = 1,
+                    Data = employee
                 });
             }
-            return Ok(new
+            catch (ArgumentNullException ex)
             {
-                TotalRowCount = 1,
-                Data = employee
-            });
+                return NotFound(new
+                {
+                    Message = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred while retrieving the employee.",
+                    Error = ex.Message
+                });
+            }
         }
 
         /// <summary>
@@ -187,24 +201,40 @@ namespace EmployeeManagementSystemAPI.Controllers
         [HttpGet("employee-list")]
         public async Task<IActionResult> GetEmploees(int page = 1, int pageSize = 10)
         {
-            var totalCount = _authContext.Employees.Count();
-            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-
-            // Retrieve employees with pagination from the database
-            var employees = await _authContext.Employees
-                .OrderBy(e => e.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            // Return a JSON response with pagination information and employee data
-            return Ok(new
+            try
             {
-                TotalCount = totalCount,
-                Data = employees,
-                TotalPages = totalPages,
-                CurrentPage = page
-            });;
+                // Validate input values (e.g., page, pageSize)
+                if (page < 1 || pageSize < 1)
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Invalid pagination parameters",
+                    });
+                }
+
+                // Retrieve employees with pagination using the EmployeeService
+                var employees = await _employeeService.GetEmployees(page, pageSize);
+
+                var totalCount = await _dbContext.Employees.CountAsync();
+                var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                return Ok(new
+                {
+                    TotalCount = totalCount,
+                    Data = employees,
+                    TotalPages = totalPages,
+                    CurrentPage = page
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred while retrieving employees.",
+                    Error = ex.Message
+                });
+            }
         }
 
         /// <summary>
@@ -214,20 +244,24 @@ namespace EmployeeManagementSystemAPI.Controllers
         /// <returns>A response indicating success or not found.</returns>
         [Authorize]
         [HttpDelete("delete-employee/{id}")]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        public async Task<IActionResult> DeleteEmployeeById(int id)
         {
-            var employeeToDelete = _authContext.Employees.Find(id);
-
-            if (employeeToDelete == null)
+            try
             {
-                return NotFound(); 
-            }
-            // Delete the employee's profile picture and remove the employee from the database
-            await _fileService.DeleteImageAsync(employeeToDelete.ProfilePictureUrl);
-            _authContext.Employees.Remove(employeeToDelete);
-            await _authContext.SaveChangesAsync();
+                // Delete the employee using the EmployeeService
+                await _employeeService.DeleteEmployeeById(id);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred while deleting the employee.",
+                    Error = ex.Message
+                });
+            }
 
         }
 
