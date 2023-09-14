@@ -88,8 +88,9 @@ export class CreateEmployeeComponent implements OnInit {
                         });
                 } else {
                     this.employeeService.createEmployee(formData).subscribe(resp => {
+
                             this.toast.success({detail: "Success", summary: "Employee saved", duration: 5000})
-                            this.router.navigate([`/view-employee/${this.employee.id}`])
+                            this.router.navigate([`/view-employee/${resp.data.id}`])
                         },
                         error => {
                             this.showValidation = true;

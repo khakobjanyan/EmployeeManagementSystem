@@ -46,6 +46,8 @@ builder.Services.Configure<FormOptions>(o =>
     o.MemoryBufferThreshold = int.MaxValue;
 });
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddHangfire(config =>
 {

@@ -49,7 +49,7 @@ namespace EmployeeManagementSystemAPI.Helpers
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, "User")
             });
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
             int expirationMinutes = int.Parse(_configuration["JwtSettings:AccessTokenExpirationMinutes"]);

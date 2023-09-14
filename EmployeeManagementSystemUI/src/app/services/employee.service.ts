@@ -13,8 +13,28 @@ export class EmployeeService {
     constructor(private http: HttpClient) {
     }
 
-    public createEmployee(employee: FormData) {
-        return this.http.post(`${this.baseUrl}add-employee`, employee);
+    public createEmployee(employee: FormData): Observable<ResponseDataAndMessage> {
+        return this.http.post(`${this.baseUrl}add-employee`, employee).pipe(
+          map((response: any) => {
+            const employee: Employee = {
+              id: response.data.id,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              position: response.data.position,
+              startDate: new Date(response.data.startDate),
+              status: {
+                id: response.data.status,
+                name: response.data.statusId,
+              },
+              profilePictureUrl: response.data.profilePictureUrl,
+            } as Employee;
+
+            return {
+              message: response.message,
+              data: employee,
+            } as ResponseDataAndMessage;
+          })
+        );
     }
 
     public editEmployee(employeeId: number, employee: FormData) {
@@ -67,7 +87,10 @@ interface ResponseData {
     totalCount: number,
     data: Employee
 }
-
+interface ResponseDataAndMessage {
+  message: string,
+  data: Employee
+}
 interface EmployeeListData {
     totalCount: number,
     data: Employee[],

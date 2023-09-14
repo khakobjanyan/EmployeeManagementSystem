@@ -23,7 +23,7 @@ namespace EmployeeManagementSystemAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private readonly IUserService _userService;
-        private readonly ILogger _logger;
+        private readonly ILogger<UserController> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserController"/> class.
@@ -31,7 +31,7 @@ namespace EmployeeManagementSystemAPI.Controllers
         /// <param name="appDbContext">The application database context.</param>
         /// <param name="configuration">The configuration for JWT tokens.</param>
         /// <param name="emailService">The email service for sending emails.</param>
-        public UserController(AppDbContext appDbContext, IConfiguration configuration, IEmailService emailService, IUserService userService, ILogger logger)
+        public UserController(AppDbContext appDbContext, IConfiguration configuration, IEmailService emailService, IUserService userService, ILogger<UserController> logger)
         {
             _authContext = appDbContext;
             _configuration = configuration;

@@ -22,14 +22,14 @@ namespace EmployeeManagementSystemAPI.Controllers
     {
         private readonly AppDbContext _dbContext;
         private readonly IEmployeeService _employeeService;
-        private readonly ILogger _logger;
+        private readonly ILogger<EmployeeController> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeController"/> class.
         /// </summary>
         /// <param name="appDbContext">The application database context.</param>
         /// <param name="fileService">The file service for handling images.</param>
-        public EmployeeController(AppDbContext appDbContext, IEmployeeService employeeService, ILogger logger)
+        public EmployeeController(AppDbContext appDbContext, IEmployeeService employeeService, ILogger<EmployeeController> logger)
         {
             _dbContext = appDbContext;
             _employeeService = employeeService;

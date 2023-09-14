@@ -2,7 +2,6 @@
 using EmployeeManagementSystemAPI.Models.Dto;
 using EmployeeManagementSystemAPI.Models;
 using EmployeeManagementSystemAPI.Repository.Interfaces;
-using EmployeeManagementSystemAPI.Utility.EmailService;
 using EmployeeManagementSystemAPI.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Authentication;
@@ -13,14 +12,10 @@ namespace EmployeeManagementSystemAPI.Repository.Impl
     public class UserService : IUserService
     {
         private readonly AppDbContext _authContext;
-        private readonly IConfiguration _configuration;
-        private readonly IEmailService _emailService;
 
-        public UserService(AppDbContext authContext, IConfiguration configuration, IEmailService emailService)
+        public UserService(AppDbContext authContext)
         {
             _authContext = authContext;
-            _configuration = configuration;
-            _emailService = emailService;
         }
 
         public async Task<TokenDto> AuthenticateAsync(LoginModelDto userObj)
